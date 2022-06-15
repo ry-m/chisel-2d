@@ -24,9 +24,11 @@
 
 package org.chisel2d.demo;
 
-public class App {
+import org.chisel2d.ChiselApp;
+
+public class App extends ChiselApp {
 
     public static void main(String[] args) {
-        System.out.println("Hello, world!");
+        new App().launch("My Demo App");
     }
 }
