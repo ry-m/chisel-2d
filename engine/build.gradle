@@ -1,0 +1,4 @@
+
+plugins {
+    id 'org.chisel2d.java-library-conventions'
+}

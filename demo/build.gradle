@@ -1,0 +1,13 @@
+
+plugins {
+    id 'org.chisel2d.java-application-conventions'
+}
+
+dependencies {
+    implementation project(':engine')
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'org.chisel2d.demo.App'
+}

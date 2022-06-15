@@ -1,0 +1,3 @@
+
+rootProject.name = 'chisel-2d'
+include('demo', 'engine')
