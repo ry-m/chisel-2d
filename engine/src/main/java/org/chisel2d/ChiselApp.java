@@ -85,8 +85,14 @@ public abstract class ChiselApp {
             for (Subsystem subsystem : subsystems) {
                 // Perform a loop update
                 running = subsystem.update();
-                if (!running)
+                if (!running) {
+                    LOG.info(
+                        "Application shutdown requested by subsystem: {}",
+                        subsystem.getClass().getSimpleName()
+                    );
+
                     break; // Halt loop execution
+                }
             }
         }
 
