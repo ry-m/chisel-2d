@@ -32,6 +32,8 @@ public abstract class ChiselApp {
     // Logger
     private static final Logger LOG = LogManager.getLogger();
 
+    private static final int DEFAULT_UPS = 60;
+
     // Default window title
     private static final String DEFAULT_TITLE = "Window";
 
@@ -74,7 +76,8 @@ public abstract class ChiselApp {
         );
 
         new Engine(new Subsystem[] {
-                new Window(windowTitle, width, height, resizable)
+            new Window(windowTitle, width, height, resizable),
+            new Timer(this::onTick)
         }).start();
     }
 
@@ -135,5 +138,9 @@ public abstract class ChiselApp {
     @SuppressWarnings("unused")
     protected void launch() {
         launch(null);
+    }
+
+    static int getUPS() {
+        return DEFAULT_UPS;
     }
 }
