@@ -27,6 +27,8 @@ package org.chisel2d;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+
 public abstract class ChiselApp {
 
     // Logger
@@ -66,7 +68,27 @@ public abstract class ChiselApp {
             windowTitle, width, height, resizable
         );
 
+        List<Subsystem> subsystems = List.of(
+                new Window(windowTitle, width, height, resizable)
+        );
+
+        // Initialise all subsystems, then start
+        subsystems.forEach(Subsystem::init);
+        subsystems.forEach(Subsystem::start);
+
+        // Main loop
         running = true;
+        while (running) {
+            for (Subsystem subsystem : subsystems) {
+                // Perform a loop update
+                running = subsystem.update();
+                if (!running)
+                    break; // Halt loop execution
+            }
+        }
+
+        // Termination stage
+        subsystems.forEach(Subsystem::shutdown);
     }
 
     /**
