@@ -29,6 +29,16 @@ import org.chisel2d.ChiselApp;
 public class App extends ChiselApp {
 
     public static void main(String[] args) {
-        launch("My Demo App");
+        new App().launch("My Demo App");
+    }
+
+    @Override
+    protected void onTick() {
+        // Update game
+    }
+
+    @Override
+    protected void setup() {
+        // Setup game
     }
 }

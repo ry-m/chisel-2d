@@ -27,8 +27,6 @@ package org.chisel2d;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-
 public abstract class ChiselApp {
 
     // Logger
@@ -46,8 +44,15 @@ public abstract class ChiselApp {
     // Protected constructor
     protected ChiselApp() { }
 
-    // Is the app running?
-    private static boolean running = false;
+    /**
+     * Provides access to the application loop on each game tick
+     */
+    protected abstract void onTick();
+
+    /**
+     * Provides an opportunity to set up sprites and assets before the application window appears
+     */
+    protected abstract void setup();
 
     /**
      * Launch the application with all window parameters specified
@@ -56,10 +61,7 @@ public abstract class ChiselApp {
      * @param height Window height
      * @param resizable Should the window be user-resizable?
      */
-    protected static void launch(String title, int width, int height, boolean resizable) {
-        if (running) {
-            throw new IllegalStateException("The application is already running");
-        }
+    protected void launch(String title, int width, int height, boolean resizable) {
 
         // Validate window title
         String windowTitle = title == null
@@ -71,33 +73,9 @@ public abstract class ChiselApp {
             windowTitle, width, height, resizable
         );
 
-        List<Subsystem> subsystems = List.of(
+        new Engine(new Subsystem[] {
                 new Window(windowTitle, width, height, resizable)
-        );
-
-        // Initialise all subsystems, then start
-        subsystems.forEach(Subsystem::init);
-        subsystems.forEach(Subsystem::start);
-
-        // Main loop
-        running = true;
-        while (running) {
-            for (Subsystem subsystem : subsystems) {
-                // Perform a loop update
-                running = subsystem.update();
-                if (!running) {
-                    LOG.info(
-                        "Application shutdown requested by subsystem: {}",
-                        subsystem.getClass().getSimpleName()
-                    );
-
-                    break; // Halt loop execution
-                }
-            }
-        }
-
-        // Termination stage
-        subsystems.forEach(Subsystem::shutdown);
+        }).start();
     }
 
     /**
@@ -107,7 +85,7 @@ public abstract class ChiselApp {
      * @param height Window height
      */
     @SuppressWarnings({"unused", "SameParameterValue"})
-    protected static void launch(String title, int width, int height) {
+    protected void launch(String title, int width, int height) {
         launch(title, width, height, true);
     }
 
@@ -117,7 +95,7 @@ public abstract class ChiselApp {
      * @param resizable Should the window be user-resizable?
      */
     @SuppressWarnings({"unused", "SameParameterValue"})
-    protected static void launch(String title, boolean resizable) {
+    protected void launch(String title, boolean resizable) {
         launch(title, DEFAULT_WIDTH, DEFAULT_HEIGHT, resizable);
     }
 
@@ -128,7 +106,7 @@ public abstract class ChiselApp {
      * @param resizable Should the window be user-resizable?
      */
     @SuppressWarnings({"unused", "SameParameterValue"})
-    protected static void launch(int width, int height, boolean resizable) {
+    protected void launch(int width, int height, boolean resizable) {
         launch(null, width, height, resizable);
     }
 
@@ -137,7 +115,7 @@ public abstract class ChiselApp {
      * @param title Window title
      */
     @SuppressWarnings({"unused", "SameParameterValue"})
-    protected static void launch(String title) {
+    protected void launch(String title) {
         launch(title, false);
     }
 
@@ -147,7 +125,7 @@ public abstract class ChiselApp {
      * @param height Window height
      */
     @SuppressWarnings({"unused", "SameParameterValue"})
-    protected static void launch(int width, int height) {
+    protected void launch(int width, int height) {
         launch(null, width, height);
     }
 
@@ -155,7 +133,7 @@ public abstract class ChiselApp {
      * Launch the application with the default window specifications
      */
     @SuppressWarnings("unused")
-    protected static void launch() {
+    protected void launch() {
         launch(null);
     }
 }
