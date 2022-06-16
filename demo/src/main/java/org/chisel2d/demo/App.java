@@ -29,6 +29,6 @@ import org.chisel2d.ChiselApp;
 public class App extends ChiselApp {
 
     public static void main(String[] args) {
-        new App().launch("My Demo App");
+        launch("My Demo App");
     }
 }

@@ -34,6 +34,9 @@ public abstract class ChiselApp {
     // Logger
     private static final Logger LOG = LogManager.getLogger();
 
+    // Default window title
+    private static final String DEFAULT_TITLE = "Window";
+
     // Default window width
     private static final int DEFAULT_WIDTH = 800;
 
@@ -53,14 +56,14 @@ public abstract class ChiselApp {
      * @param height Window height
      * @param resizable Should the window be user-resizable?
      */
-    protected void launch(String title, int width, int height, boolean resizable) {
+    protected static void launch(String title, int width, int height, boolean resizable) {
         if (running) {
             throw new IllegalStateException("The application is already running");
         }
 
         // Validate window title
         String windowTitle = title == null
-                ? getClass().getSimpleName()
+                ? DEFAULT_TITLE
                 : title;
 
         LOG.info(
@@ -98,7 +101,7 @@ public abstract class ChiselApp {
      * @param height Window height
      */
     @SuppressWarnings({"unused", "SameParameterValue"})
-    protected void launch(String title, int width, int height) {
+    protected static void launch(String title, int width, int height) {
         launch(title, width, height, true);
     }
 
@@ -108,7 +111,7 @@ public abstract class ChiselApp {
      * @param resizable Should the window be user-resizable?
      */
     @SuppressWarnings({"unused", "SameParameterValue"})
-    protected void launch(String title, boolean resizable) {
+    protected static void launch(String title, boolean resizable) {
         launch(title, DEFAULT_WIDTH, DEFAULT_HEIGHT, resizable);
     }
 
@@ -119,7 +122,7 @@ public abstract class ChiselApp {
      * @param resizable Should the window be user-resizable?
      */
     @SuppressWarnings({"unused", "SameParameterValue"})
-    protected void launch(int width, int height, boolean resizable) {
+    protected static void launch(int width, int height, boolean resizable) {
         launch(null, width, height, resizable);
     }
 
@@ -128,7 +131,7 @@ public abstract class ChiselApp {
      * @param title Window title
      */
     @SuppressWarnings({"unused", "SameParameterValue"})
-    protected void launch(String title) {
+    protected static void launch(String title) {
         launch(title, false);
     }
 
@@ -138,7 +141,7 @@ public abstract class ChiselApp {
      * @param height Window height
      */
     @SuppressWarnings({"unused", "SameParameterValue"})
-    protected void launch(int width, int height) {
+    protected static void launch(int width, int height) {
         launch(null, width, height);
     }
 
@@ -146,7 +149,7 @@ public abstract class ChiselApp {
      * Launch the application with the default window specifications
      */
     @SuppressWarnings("unused")
-    protected void launch() {
+    protected static void launch() {
         launch(null);
     }
 }
