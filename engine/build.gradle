@@ -34,9 +34,6 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-api:2.17.2'
     implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
 
-    // Apache Commons IO
-    compileOnly 'commons-io:commons-io:2.11.0'
-
     // LWJGL.
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
     implementation "org.lwjgl:lwjgl"

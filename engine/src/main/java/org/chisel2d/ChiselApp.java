@@ -86,8 +86,7 @@ public abstract class ChiselApp {
 
         new Engine(new Subsystem[] {
             new Window(windowTitle, width, height, resizable),
-            new Renderer(),
-            new Timer(this::setup, this::onTick)
+            new Timer(this::setup, this::onTick),
         }).start();
     }
 
