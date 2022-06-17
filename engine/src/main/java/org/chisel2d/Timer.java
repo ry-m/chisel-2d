@@ -37,7 +37,14 @@ public class Timer implements Subsystem {
     private static final Logger LOG = LogManager.getLogger();
 
     // The game tick task. Called on a 'tick' update
-    private final Task tick;
+    private final Task onTick;
+
+    // The game setup task. Called by the "start" method.
+    private final Task setup;
+
+    /////////////////////
+    // Timer variables //
+    /////////////////////
 
     private long lastTime = System.nanoTime();
 
@@ -53,10 +60,12 @@ public class Timer implements Subsystem {
 
     /**
      * Constructor
-     * @param tick Game tick task
+     * @param setup Client setup method
+     * @param onTick Client onTick method
      */
-    public Timer(Task tick) {
-        this.tick = tick;
+    public Timer(Task setup, Task onTick) {
+        this.setup = setup;
+        this.onTick = onTick;
     }
 
     @Override
@@ -66,7 +75,8 @@ public class Timer implements Subsystem {
 
     @Override
     public void start() {
-        LOG.info("Target UPS: {}", ChiselApp.getUPS());
+        LOG.info("Calling client 'setup()' method...");
+        setup.invoke();
     }
 
     @Override
@@ -76,7 +86,7 @@ public class Timer implements Subsystem {
         lastTime = now;
 
         if (delta >= 1.0) {
-            tick.invoke();
+            onTick.invoke();
             updates++;
             delta--;
         }
