@@ -43,6 +43,9 @@ public abstract class ChiselApp {
     // Default window height
     private static final int DEFAULT_HEIGHT = 600;
 
+    // Has the application launched yet?
+    private static boolean launched = false;
+
     // Protected constructor
     protected ChiselApp() { }
 
@@ -64,6 +67,12 @@ public abstract class ChiselApp {
      * @param resizable Should the window be user-resizable?
      */
     protected void launch(String title, int width, int height, boolean resizable) {
+        if (launched) {
+            LOG.error("Attempt to launch application again blocked, please only launch once");
+            return;
+        }
+
+        launched = true;
 
         // Validate window title
         String windowTitle = title == null
