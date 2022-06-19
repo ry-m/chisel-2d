@@ -22,24 +22,61 @@
  * SOFTWARE.
  */
 
-package org.chisel2d.demo;
+package org.chisel2d.graphics;
 
-import org.chisel2d.ChiselApp;
-import org.chisel2d.sprite.Sprite;
+import static org.lwjgl.opengl.GL33.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL33.glBindTexture;
 
-public class App extends ChiselApp {
+public class Texture {
 
-    public static void main(String[] args) {
-        new App().launch("My Demo App");
+    // Path to texture image
+    private final String path;
+
+    // Texture ID
+    private final int id;
+
+    // Size of image
+    private final int width, height;
+
+    // Texture mask. If a pixel is fully transparent, the value is true for that pixel. Else, it is false.
+    // Opaque == false
+    // Transparent == true
+    private final boolean[][] mask;
+
+    /**
+     * Create a texture
+     *
+     * @param id Texture ID
+     */
+    Texture(String path, int id, int width, int height, boolean[][] mask) {
+        this.path = path;
+        this.id = id;
+        this.width = width;
+        this.height = height;
+        this.mask = mask;
     }
 
-    @Override
-    protected void setup() {
-        new Sprite("demo/src/main/resources/smile.png");
+    public String getPath() {
+        return path;
     }
 
-    @Override
-    protected void onTick() {
-        // Update game
+    public int getId() {
+        return id;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public boolean[][] getMask() {
+        return mask;
+    }
+
+    public void bind() {
+        glBindTexture(GL_TEXTURE_2D, id);
     }
 }

@@ -22,24 +22,14 @@
  * SOFTWARE.
  */
 
-package org.chisel2d.demo;
+package org.chisel2d.sprite;
 
-import org.chisel2d.ChiselApp;
-import org.chisel2d.sprite.Sprite;
+import org.chisel2d.graphics.TextureManager;
 
-public class App extends ChiselApp {
+public class Sprite {
 
-    public static void main(String[] args) {
-        new App().launch("My Demo App");
-    }
-
-    @Override
-    protected void setup() {
-        new Sprite("demo/src/main/resources/smile.png");
-    }
-
-    @Override
-    protected void onTick() {
-        // Update game
+    public Sprite(String imagePath) {
+        // Register the texture to be loaded when the engine is initialised.
+        TextureManager.register(imagePath);
     }
 }

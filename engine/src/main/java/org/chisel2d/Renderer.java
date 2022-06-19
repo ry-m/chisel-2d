@@ -28,6 +28,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.chisel2d.graphics.Shader;
 import org.chisel2d.graphics.ShaderBuilder;
+import org.chisel2d.graphics.TextureManager;
 
 /**
  * The {@code Renderer} class renders everything to the display
@@ -96,8 +97,8 @@ class Renderer implements Subsystem {
      */
     @Override
     public void start() {
-        // TODO Create textures
         LOG.info("Creating textures...");
+        TextureManager.loadAll();
     }
 
     /**
