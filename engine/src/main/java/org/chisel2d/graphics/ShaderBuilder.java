@@ -24,84 +24,15 @@
 
 package org.chisel2d.graphics;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import static org.lwjgl.opengl.GL33.*;
-
 /**
- * Utility class for creating shaders.
+ * A utility class used to create {@code Shader} objects. Ensures shaders are valid for rendering.
  */
 public class ShaderBuilder {
 
-    // Logger.
-    private static final Logger LOG = LogManager.getLogger();
-
-    /**
-     * Utility class.
-     */
     private ShaderBuilder() { }
 
-    /**
-     * Shader type (vertex/fragment/program).
-     */
-    private enum ShaderType {
-        VERTEX, FRAGMENT, PROGRAM
-    }
-
-    /**
-     * Compile a shader.
-     *
-     * @param vertSrc Vertex shader source code.
-     * @param fragSrc Fragment shader source code.
-     * @return Newly created shader program.
-     */
-    public static Shader compile(String vertSrc, String fragSrc) {
-        // Create and compile vertex shader.
-        int vs = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vs, vertSrc);
-        glCompileShader(vs);
-        checkCompileStatus(vs, ShaderType.VERTEX);
-
-        // Create and compile fragment shader.
-        int fs = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fs, fragSrc);
-        glCompileShader(fs);
-        checkCompileStatus(fs, ShaderType.FRAGMENT);
-
-        // Compile program.
-        int program = glCreateProgram();
-        glAttachShader(program, vs);
-        glAttachShader(program, fs);
-        glLinkProgram(program);
-        checkCompileStatus(program, ShaderType.PROGRAM);
-
-        // Clean-up
-        glDeleteShader(vs);
-        glDeleteShader(fs);
-
-        return new Shader(program);
-    }
-
-    /**
-     * Check compile status of a shader, or link status of the program.
-     *
-     * @param id Shader or program id.
-     * @param type Shader type.
-     */
-    private static void checkCompileStatus(int id, ShaderType type) {
-        if (type == ShaderType.PROGRAM) {
-            int success = glGetProgrami(id, GL_LINK_STATUS);
-            if (success == GL_FALSE) {
-                LOG.error("OpenGL shader error: {}", glGetProgramInfoLog(id));
-                throw new IllegalStateException("Failed to link id program.");
-            }
-        } else {
-            int success = glGetShaderi(id, GL_COMPILE_STATUS);
-            if (success == GL_FALSE) {
-                LOG.error("OpenGL shader error> {}", glGetShaderInfoLog(id));
-                throw new IllegalStateException("Failed to compile id of type " + type);
-            }
-        }
+    public static Shader compile(String vertexSource, String fragmentSource) {
+        // TODO implement shader compiling
+        return null;
     }
 }

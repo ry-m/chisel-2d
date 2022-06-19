@@ -24,116 +24,118 @@
 
 package org.chisel2d.graphics;
 
-import org.joml.*;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL33.*;
 
-/**
- * Represents a shader in an OpenGL context.
- */
-@SuppressWarnings("unused")
-public final class Shader {
+public class Shader {
 
-    // Program ID.
-    private final int programId;
+    // Shader program ID
+    private final int id;
 
-    /**
-     * Constructor.
-     * @param programId Program ID of the compiled shader program.
-     */
-    Shader(int programId) {
-        this.programId = programId;
+    Shader(int id) {
+        this.id = id;
     }
 
     /**
      * Use this shader.
      */
     public void use() {
-        glUseProgram(programId);
+        glUseProgram(id);
     }
 
     /**
-     * Set an integer uniform value.
+     * Set an integer uniform value
      *
-     * @param name Uniform name.
-     * @param value Value.
-     * @param useShader Use the shader.
+     * @param name Uniform name
+     * @param value Value
+     * @param useShader Use the shader
      */
+    @SuppressWarnings("unused")
     public void setValue(String name, int value, boolean useShader) {
         if (useShader) use();
         glUniform1i(locationOf(name), value);
     }
 
     /**
-     * Set a float uniform value.
+     * Set a float uniform value
      *
-     * @param name Uniform name.
-     * @param value Value.
-     * @param useShader Use the shader.
+     * @param name Uniform name
+     * @param value Value
+     * @param useShader Use the shader
      */
+    @SuppressWarnings("unused")
     public void setValue(String name, float value, boolean useShader) {
         if (useShader) use();
         glUniform1f(locationOf(name), value);
     }
 
     /**
-     * Set a boolean uniform value.
+     * Set a boolean uniform value
      *
-     * @param name Uniform name.
-     * @param value Value.
-     * @param useShader Use the shader.
+     * @param name Uniform name
+     * @param value Value
+     * @param useShader Use the shader
      */
+    @SuppressWarnings("unused")
     public void setValue(String name, boolean value, boolean useShader) {
         if (useShader) use();
         glUniform1i(locationOf(name), value ? 1 : 0);
     }
 
     /**
-     * Set a Vector2f uniform value.
+     * Set a Vector2f uniform value
      *
-     * @param name Uniform name.
-     * @param value Value.
-     * @param useShader Use the shader.
+     * @param name Uniform name
+     * @param value Value
+     * @param useShader Use the shader
      */
+    @SuppressWarnings("unused")
     public void setValue(String name, Vector2f value, boolean useShader) {
         if (useShader) use();
         glUniform2f(locationOf(name), value.x(), value.y());
     }
 
     /**
-     * Set a Vector3f uniform value.
+     * Set a Vector3f uniform value
      *
-     * @param name Uniform name.
-     * @param value Value.
-     * @param useShader Use the shader.
+     * @param name Uniform name
+     * @param value Value
+     * @param useShader Use the shader
      */
+    @SuppressWarnings("unused")
     public void setValue(String name, Vector3f value, boolean useShader) {
         if (useShader) use();
         glUniform3f(locationOf(name), value.x(), value.y(), value.z());
     }
 
     /**
-     * Set a Vector4f uniform value.
+     * Set a Vector4f uniform value
      *
-     * @param name Uniform name.
-     * @param value Value.
-     * @param useShader Use the shader.
+     * @param name Uniform name
+     * @param value Value
+     * @param useShader Use the shader
      */
+    @SuppressWarnings("unused")
     public void setValue(String name, Vector4f value, boolean useShader) {
         if (useShader) use();
         glUniform4f(locationOf(name), value.x(), value.y(), value.z(), value.w());
     }
 
     /**
-     * Set a Matrix4f uniform value.
+     * Set a Matrix4f uniform value
      *
-     * @param name Uniform name.
-     * @param value Value.
-     * @param useShader Use the shader.
+     * @param name Uniform name
+     * @param value Value
+     * @param useShader Use the shader
      */
+    @SuppressWarnings("unused")
     public void setValue(String name, Matrix4f value, boolean useShader) {
         if (useShader) use();
         FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
@@ -142,12 +144,12 @@ public final class Shader {
     }
 
     /**
-     * Get the uniform location for a name.
+     * Get the uniform location for a name
      *
-     * @param name Name.
-     * @return Uniform location.
+     * @param name Name
+     * @return Uniform location
      */
     private int locationOf(String name) {
-        return glGetUniformLocation(programId, name);
+        return glGetUniformLocation(id, name);
     }
 }

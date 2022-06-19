@@ -24,11 +24,18 @@
 
 package org.chisel2d;
 
+import org.chisel2d.graphics.Shader;
+
 class Renderer implements Subsystem {
+
+    Renderer(Shader shader) {
+
+    }
 
     @Override
     public void init() {
-
+        // TODO Compile shader (Window should be initialised, GL context...)
+        // TODO Create textures
     }
 
     @Override
@@ -38,7 +45,7 @@ class Renderer implements Subsystem {
 
     @Override
     public boolean update() {
-        return true;
+        return false;
     }
 
     @Override

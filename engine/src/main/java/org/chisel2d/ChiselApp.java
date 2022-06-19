@@ -26,6 +26,7 @@ package org.chisel2d;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.chisel2d.graphics.ShaderBuilder;
 
 public abstract class ChiselApp {
 
@@ -86,7 +87,9 @@ public abstract class ChiselApp {
 
         new Engine(new Subsystem[] {
             new Window(windowTitle, width, height, resizable),
-            new Timer(this::setup, this::onTick),
+            // TODO fix this
+            new Renderer(ShaderBuilder.compile(null, null)),
+            new Timer(this::setup, this::onTick)
         }).start();
     }
 
