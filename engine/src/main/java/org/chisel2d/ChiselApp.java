@@ -33,6 +33,7 @@ public abstract class ChiselApp {
     // Logger
     private static final Logger LOG = LogManager.getLogger();
 
+    // Default updates per second
     private static final int DEFAULT_UPS = 60;
 
     // Default window title
@@ -152,7 +153,12 @@ public abstract class ChiselApp {
         launch(null);
     }
 
+    /**
+     * Get the updates-per-second speed, specified by {@code DEFAULT_UPS} or by the client
+     * @return updates-per-second speed
+     */
     static int getUPS() {
+        // For now, the UPS cannot be changed by the user
         return DEFAULT_UPS;
     }
 }
