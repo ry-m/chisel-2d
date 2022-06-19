@@ -26,7 +26,6 @@ package org.chisel2d;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.chisel2d.graphics.ShaderBuilder;
 
 public abstract class ChiselApp {
 
@@ -87,9 +86,10 @@ public abstract class ChiselApp {
         );
 
         new Engine(new Subsystem[] {
+            // The window MUST be initialised first to ensure the OpenGL context is created, which is a requirement
+            // for many of the other subsystems. The order is important.
             new Window(windowTitle, width, height, resizable),
-            // TODO fix this
-            new Renderer(ShaderBuilder.compile(null, null)),
+            new Renderer(),
             new Timer(this::setup, this::onTick)
         }).start();
     }

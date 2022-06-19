@@ -71,13 +71,12 @@ public class Timer implements Subsystem {
     @Override
     public void init() {
         ns = 1_000_000_000.0 / ChiselApp.getUPS();
-    }
-
-    @Override
-    public void start() {
         LOG.info("Calling client 'setup()' method...");
         setup.invoke();
     }
+
+    @Override
+    public void start() { }
 
     @Override
     public boolean update() {

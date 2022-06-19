@@ -28,6 +28,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.Platform;
 
@@ -122,6 +123,9 @@ class Window implements Subsystem {
         }
 
         glfwDefaultWindowHints();
+        // OpenGL version 3.3
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         if (vidMode == null) {
@@ -159,6 +163,8 @@ class Window implements Subsystem {
         }
 
         glfwMakeContextCurrent(window);
+        GL.createCapabilities();
+
         created = true;
     }
 

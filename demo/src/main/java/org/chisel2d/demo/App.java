@@ -33,12 +33,12 @@ public class App extends ChiselApp {
     }
 
     @Override
-    protected void onTick() {
-        // Update game
+    protected void setup() {
+        // SpriteManager.register(new PlayerSprite());
     }
 
     @Override
-    protected void setup() {
-        // Setup game
+    protected void onTick() {
+        // Update game
     }
 }

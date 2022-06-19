@@ -24,28 +24,89 @@
 
 package org.chisel2d;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.chisel2d.graphics.Shader;
+import org.chisel2d.graphics.ShaderBuilder;
 
+/**
+ * The {@code Renderer} class renders everything to the display
+ */
 class Renderer implements Subsystem {
 
-    Renderer(Shader shader) {
+    // Logger
+    private static final Logger LOG = LogManager.getLogger();
 
-    }
+    // One 'global' shader is used
+    private Shader shader = null;
 
+    // Vertex shader source (GLSL).
+    static final String VERTEX_SHADER_SRC = """
+            #version 330 core
+            layout (location = 0) in vec4 vertex; // <vec2 position, vec2 texCoords>
+
+            out vec2 TexCoords;
+
+            uniform mat4 model;
+            uniform mat4 projection;
+
+            void main()
+            {
+                TexCoords = vertex.zw;
+                gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
+            }""";
+
+    // Fragment shader source (GLSL).
+    static final String FRAGMENT_SHADER_SRC = """
+            #version 330 core
+            in vec2 TexCoords;
+            out vec4 color;
+
+            uniform sampler2D image;
+            uniform float opacity;
+
+            void main()
+            {
+                vec4 texColor = texture(image, TexCoords);
+                if (texColor.w < 0.1)
+                    discard;
+                if (texColor.w == 1.0) {
+                    texColor.w = opacity;
+                } else {
+                    texColor.w -= 1.0 - opacity;
+                }
+                    
+                color = texColor;
+            }""";
+
+    // Package-private constructor
+    Renderer() { }
+
+    /**
+     * Create and compile the shader
+     */
     @Override
     public void init() {
-        // TODO Compile shader (Window should be initialised, GL context...)
-        // TODO Create textures
+        LOG.info("Compiling shader...");
+        shader = ShaderBuilder.compile(Renderer.VERTEX_SHADER_SRC, Renderer.FRAGMENT_SHADER_SRC);
     }
 
+    /**
+     * Create textures (client start() method must be called previously to register textures)
+     */
     @Override
     public void start() {
-
+        // TODO Create textures
+        LOG.info("Creating textures...");
     }
 
+    /**
+     * Render things!
+     * @return true
+     */
     @Override
     public boolean update() {
-        return false;
+        return true; // Keep rendering
     }
 
     @Override
