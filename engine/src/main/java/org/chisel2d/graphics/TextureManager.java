@@ -49,6 +49,9 @@ public final class TextureManager {
     // Textures to be loaded
     private static final Stack<Map.Entry<String, String>> textureBuffer = new Stack<>();
 
+    // Has the loadAll() method been called?
+    private static boolean loaded = false;
+
     private TextureManager() { }
 
     /**
@@ -81,11 +84,17 @@ public final class TextureManager {
      * Load all textures from the {@code textureBuffer}. Should be done during initialisation stages.
      */
     public static void loadAll() {
+        if (loaded) {
+            LOG.warn("Loading textures during runtime. This may decrease performance.");
+        }
+
         while (!textureBuffer.isEmpty()) {
             Map.Entry<String, String> entry = textureBuffer.pop();
             // Key = name, value = texture path
             load(entry.getKey(), entry.getValue());
         }
+
+        loaded = true;
     }
 
     /**
