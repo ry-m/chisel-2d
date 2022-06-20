@@ -39,9 +39,6 @@ public class Timer implements Subsystem {
     // The game tick task. Called on a 'tick' update
     private final Task onTick;
 
-    // The game setup task. Called by the "start" method.
-    private final Task setup;
-
     /////////////////////
     // Timer variables //
     /////////////////////
@@ -60,19 +57,15 @@ public class Timer implements Subsystem {
 
     /**
      * Constructor
-     * @param setup Client setup method
      * @param onTick Client onTick method
      */
-    public Timer(Task setup, Task onTick) {
-        this.setup = setup;
+    public Timer(Task onTick) {
         this.onTick = onTick;
     }
 
     @Override
     public void init() {
         ns = 1_000_000_000.0 / ChiselApp.getUPS();
-        LOG.info("Calling client 'setup()' method...");
-        setup.invoke();
     }
 
     @Override

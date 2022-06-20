@@ -31,7 +31,6 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 
-import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.*;
@@ -39,7 +38,7 @@ import java.util.*;
 import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
-public class TextureManager {
+public final class TextureManager {
 
     // Logger
     private static final Logger LOG = LogManager.getLogger();
@@ -61,11 +60,11 @@ public class TextureManager {
      * Register a texture from path
      * @param path Path to the image resource
      */
-    public static void register(String path) {
+    public static String register(String path) {
         // Textures from files are named after their file name.
         // To register a texture with a different name, it must be registered manually
         // using the TextureManager.register(String path, String name) signature.
-        register(FilenameUtils.getBaseName(path), path);
+        return register(FilenameUtils.getBaseName(path), path);
     }
 
     /**
@@ -73,8 +72,9 @@ public class TextureManager {
      * @param name Name of the texture
      * @param path Path to the image resource
      */
-    public static void register(String name, String path) {
+    public static String register(String name, String path) {
         textureBuffer.push(new AbstractMap.SimpleEntry<>(name, path));
+        return name;
     }
 
     /**

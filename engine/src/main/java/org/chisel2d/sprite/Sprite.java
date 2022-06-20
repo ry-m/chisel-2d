@@ -28,8 +28,19 @@ import org.chisel2d.graphics.TextureManager;
 
 public class Sprite {
 
+    // The texture ID registered in the TextureManager
+    private final String textureID;
+
+    /**
+     * Create a sprite with a texture
+     * @param imagePath The image resource for the texture
+     */
     public Sprite(String imagePath) {
         // Register the texture to be loaded when the engine is initialised.
-        TextureManager.register(imagePath);
+        this.textureID = TextureManager.register(imagePath);
+    }
+
+    public String getTextureID() {
+        return textureID;
     }
 }

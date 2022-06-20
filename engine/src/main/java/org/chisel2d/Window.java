@@ -173,6 +173,7 @@ class Window implements Subsystem {
      */
     @Override
     public void start() {
+        LOG.info("Window visibility changed to visible");
         glfwShowWindow(window);
     }
 

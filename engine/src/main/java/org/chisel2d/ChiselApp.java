@@ -85,12 +85,15 @@ public abstract class ChiselApp {
             windowTitle, width, height, resizable
         );
 
+        LOG.info("Calling client 'setup()' method...");
+        setup();
+
         new Engine(new Subsystem[] {
             // The window MUST be initialised first to ensure the OpenGL context is created, which is a requirement
             // for many of the other subsystems. The order is important.
             new Window(windowTitle, width, height, resizable),
             new Renderer(),
-            new Timer(this::setup, this::onTick)
+            new Timer(this::onTick)
         }).start();
     }
 

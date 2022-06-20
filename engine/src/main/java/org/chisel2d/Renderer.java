@@ -84,22 +84,18 @@ class Renderer implements Subsystem {
     Renderer() { }
 
     /**
-     * Create and compile the shader
+     * Create and compile the shader and textures
      */
     @Override
     public void init() {
         LOG.info("Compiling shader...");
         shader = ShaderBuilder.compile(Renderer.VERTEX_SHADER_SRC, Renderer.FRAGMENT_SHADER_SRC);
-    }
-
-    /**
-     * Create textures (client start() method must be called previously to register textures)
-     */
-    @Override
-    public void start() {
         LOG.info("Creating textures...");
         TextureManager.loadAll();
     }
+
+    @Override
+    public void start() { }
 
     /**
      * Render things!
