@@ -25,10 +25,13 @@
 package org.chisel2d.demo;
 
 import org.chisel2d.ChiselApp;
+import org.chisel2d.Timer;
 import org.chisel2d.sprite.Sprite;
 import org.chisel2d.sprite.SpriteManager;
 
 public class App extends ChiselApp {
+
+    private final Sprite smile = new Sprite("demo/src/main/resources/smile.png");
 
     public static void main(String[] args) {
         new App().launch("My Demo App");
@@ -36,11 +39,12 @@ public class App extends ChiselApp {
 
     @Override
     protected void setup() {
-        SpriteManager.add(new Sprite("demo/src/main/resources/smile.png"));
+        SpriteManager.add(smile);
     }
 
     @Override
     protected void onTick() {
-        // Update game
+        smile.setX((float) (150 * Math.sin(Timer.getNumTicks() / 40.0)));
+        smile.setY((float) (65 * Math.cos(Timer.getNumTicks() / 40.0)));
     }
 }

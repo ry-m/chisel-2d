@@ -55,6 +55,8 @@ public class Timer implements Subsystem {
 
     private int frames = 0;
 
+    private static int totalTicks = 0;
+
     /**
      * Constructor
      * @param onTick Client onTick method
@@ -80,6 +82,7 @@ public class Timer implements Subsystem {
         if (delta >= 1.0) {
             onTick.invoke();
             updates++;
+            totalTicks++;
             delta--;
         }
 
@@ -96,4 +99,12 @@ public class Timer implements Subsystem {
 
     @Override
     public void shutdown() { }
+
+    /**
+     * Retrieve the global number of ticks
+     * @return Tick count
+     */
+    public static int getNumTicks() {
+        return totalTicks;
+    }
 }
