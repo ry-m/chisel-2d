@@ -22,25 +22,31 @@
  * SOFTWARE.
  */
 
-package org.chisel2d.demo;
+package org.chisel2d.sprite;
 
-import org.chisel2d.ChiselApp;
-import org.chisel2d.sprite.Sprite;
-import org.chisel2d.sprite.SpriteManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class App extends ChiselApp {
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
-    public static void main(String[] args) {
-        new App().launch("My Demo App");
+public final class SpriteManager {
+
+    // Logger
+    private static final Logger LOG = LogManager.getLogger();
+
+    // Sprites collection
+    private static final List<Sprite> sprites = new LinkedList<>();
+
+    private SpriteManager() { }
+
+    public static void add(Sprite sprite) {
+        LOG.info("New sprite added: {}", sprite.toString());
+        sprites.add(sprite);
     }
 
-    @Override
-    protected void setup() {
-        SpriteManager.add(new Sprite("demo/src/main/resources/smile.png"));
-    }
-
-    @Override
-    protected void onTick() {
-        // Update game
+    public static List<Sprite> getSprites() {
+        return Collections.unmodifiableList(sprites);
     }
 }

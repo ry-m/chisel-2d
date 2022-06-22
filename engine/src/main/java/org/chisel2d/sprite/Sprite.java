@@ -26,10 +26,23 @@ package org.chisel2d.sprite;
 
 import org.chisel2d.graphics.TextureManager;
 
+@SuppressWarnings("unused")
 public class Sprite {
 
     // The texture ID registered in the TextureManager
     private final String textureID;
+
+    // Position, scale and bounding box.
+    private final AABB boundingBox = new AABB();
+
+    // Rotation (degrees)
+    private float rotation = 0.0f;
+
+    // Is the sprite visible?
+    private boolean visible = true;
+
+    // Opacity (1 == fully opaque, 0 == fully transparent)
+    private float opacity = 1.0f;
 
     /**
      * Create a sprite with a texture
@@ -42,5 +55,92 @@ public class Sprite {
 
     public String getTextureID() {
         return textureID;
+    }
+
+    /////////////////////////
+    // Getters and setters //
+    /////////////////////////
+
+    public boolean isVisible() {
+        return visible && opacity != 0.0f;
+    }
+
+    public float getScale() {
+        return boundingBox.getScaleFactor();
+    }
+
+    public void setScale(float sf) {
+        boundingBox.setScaleFactor(sf);
+    }
+
+    public float getX() {
+        return boundingBox.getCentreX();
+    }
+
+    public void setX(float x) {
+        boundingBox.setCentreX(x);
+    }
+
+    public float getY() {
+        return boundingBox.getCentreY();
+    }
+
+    public void setY(float y) {
+        boundingBox.setCentreY(y);
+    }
+
+    public float getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
+    }
+
+    public float getOpacity() {
+        return opacity;
+    }
+
+    public void setOpacity(float opacity) {
+        this.opacity = Math.max(0.0f, Math.min(1.0f, opacity));
+    }
+
+    public AABB getBoundingBox() {
+        return boundingBox;
+    }
+
+    /////////////////////////////
+    // Modifications to sprite //
+    /////////////////////////////
+
+    public void show() {
+        this.visible = true;
+    }
+
+    public void hide() {
+        this.visible = false;
+    }
+
+    public void moveX(float value) {
+        boundingBox.moveX(value);
+    }
+
+    public void moveY(float value) {
+        boundingBox.moveY(value);
+    }
+
+    public void scaleBy(float sf) {
+        boundingBox.scaleBy(sf);
+    }
+
+    public void rotateBy(float rotation) {
+        this.rotation += rotation;
+        if (this.rotation > 360) {
+            this.rotation = 0;
+        }
+    }
+
+    public void changeOpacity(float value) {
+        this.opacity = Math.max(0.0f, Math.min(opacity + value, 1.0f));
     }
 }

@@ -58,7 +58,8 @@ class Window implements Subsystem {
     private String title;
 
     // Window size
-    private int width, height;
+    private static int width;
+    private static int height;
 
     // True if the window can be resized by the user
     private final boolean resizable;
@@ -72,8 +73,8 @@ class Window implements Subsystem {
      */
     Window(String title, int width, int height, boolean resizable) {
         this.title = title;
-        this.width = width;
-        this.height = height;
+        Window.width = width;
+        Window.height = height;
         this.resizable = resizable;
     }
 
@@ -101,8 +102,8 @@ class Window implements Subsystem {
         if (!created) {
             LOG.error("Cannot update size as window is not yet created");
         } else {
-            this.width = width;
-            this.height = height;
+            Window.width = width;
+            Window.height = height;
             glfwSetWindowSize(window, width, height);
         }
     }
@@ -196,5 +197,21 @@ class Window implements Subsystem {
     public void shutdown() {
         glfwTerminate();
         Objects.requireNonNull(glfwSetErrorCallback(null)).free();
+    }
+
+    /**
+     * Get the window width
+     * @return Window width
+     */
+    public static int getWidth() {
+        return width;
+    }
+
+    /**
+     * Get the window height
+     * @return Window height
+     */
+    public static int getHeight() {
+        return height;
     }
 }

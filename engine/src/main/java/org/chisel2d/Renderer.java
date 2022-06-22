@@ -28,7 +28,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.chisel2d.graphics.Shader;
 import org.chisel2d.graphics.ShaderBuilder;
+import org.chisel2d.graphics.Texture;
 import org.chisel2d.graphics.TextureManager;
+import org.chisel2d.sprite.Sprite;
+import org.chisel2d.sprite.SpriteManager;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
+import static org.lwjgl.opengl.GL33.*;
 
 /**
  * The {@code Renderer} class renders everything to the display
@@ -40,6 +48,21 @@ class Renderer implements Subsystem {
 
     // One 'global' shader is used
     private Shader shader = null;
+
+    // VAO
+    private int vao = -1;
+
+    // Vertex data (2D sprite with texture and positions).
+    private static final float[] VERTICES = {
+            // Position     // Texture coordinates.
+            0.0f, 1.0f,     0.0f, 1.0f,
+            1.0f, 0.0f,     1.0f, 0.0f,
+            0.0f, 0.0f,     0.0f, 0.0f,
+
+            0.0f, 1.0f,     0.0f, 1.0f,
+            1.0f, 1.0f,     1.0f, 1.0f,
+            1.0f, 0.0f,     1.0f, 0.0f
+    };
 
     // Vertex shader source (GLSL).
     static final String VERTEX_SHADER_SRC = """
@@ -92,6 +115,20 @@ class Renderer implements Subsystem {
         shader = ShaderBuilder.compile(Renderer.VERTEX_SHADER_SRC, Renderer.FRAGMENT_SHADER_SRC);
         LOG.info("Creating textures...");
         TextureManager.loadAll();
+
+        // OpenGL
+        vao = glGenVertexArrays();
+        int vbo = glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, VERTICES, GL_STATIC_DRAW);
+
+        glBindVertexArray(vao);
+        glVertexAttribPointer(0, 4, GL_FLOAT, false, 4 * Float.BYTES, 0L);
+        glEnableVertexAttribArray(0);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        shader.setValue("image", 0, true);
+        glBindVertexArray(0);
     }
 
     @Override
@@ -103,11 +140,66 @@ class Renderer implements Subsystem {
      */
     @Override
     public boolean update() {
+        shader.setValue("projection", new Matrix4f().setOrtho(
+                0.0f, Window.getWidth(), Window.getHeight(), 0.0f, -1.0f, 1.0f
+                ), true
+        );
+
+        for (Sprite sprite : SpriteManager.getSprites()) {
+            if (sprite.isVisible()) {
+                renderSprite(sprite);
+            }
+        }
+
         return true; // Keep rendering
     }
 
     @Override
     public void shutdown() {
 
+    }
+
+    /**
+     * Render a single sprite.
+     *
+     * @param sprite Sprite to render
+     */
+    private void renderSprite(Sprite sprite) {
+        shader.use();
+        Matrix4f model = new Matrix4f();
+
+        // Retrieve the sprite's texture
+        Texture texture = TextureManager.getTexture(sprite.getTextureID());
+        sprite.getBoundingBox().setWidth(texture.getWidth());
+        sprite.getBoundingBox().setHeight(texture.getHeight());
+
+        // Set model position.
+        // Relative to window size. If the sprite is at (0,0), it is in the centre of the window.
+        Vector2f position = new Vector2f(
+                Window.getWidth() / 2.0f + sprite.getX() - texture.getWidth() * sprite.getScale() / 2.0f,
+                Window.getHeight() / 2.0f - sprite.getY() - texture.getHeight() * sprite.getScale() / 2.0f
+        );
+
+        model.translate(position.x, position.y, 0.0f);
+
+        // Rotation and scale.
+        model.rotate((float) Math.toRadians(sprite.getRotation()), new Vector3f(0, 0, 1));
+        model.scale(new Vector3f(new Vector2f(
+                // Determine the sprite scale and multiply that by the texture size
+                sprite.getScale() * texture.getWidth(),
+                sprite.getScale() * texture.getHeight()),
+                1.0f)
+        );
+
+        shader.setValue("model", model, false);
+        shader.setValue("opacity", sprite.getOpacity(), false);
+
+        glActiveTexture(GL_TEXTURE0);
+        texture.bind();
+
+        glBindVertexArray(vao);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        glBindVertexArray(0);
     }
 }
