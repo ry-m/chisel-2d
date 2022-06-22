@@ -36,6 +36,7 @@ import java.nio.IntBuffer;
 import java.util.Objects;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -186,6 +187,8 @@ class Window implements Subsystem {
     public boolean update() {
         glfwPollEvents();
         glfwSwapBuffers(window);
+
+        glClear(GL_COLOR_BUFFER_BIT);
 
         return !glfwWindowShouldClose(window);
     }
