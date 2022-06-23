@@ -31,7 +31,7 @@ import org.joml.Vector2f;
  * All values are absolute.
  */
 @SuppressWarnings("unused")
-public class AABB {
+class AABB {
 
     // The absolute centre (x, y) of the boundary.
     private float centreX, centreY;
@@ -44,79 +44,79 @@ public class AABB {
 
     public AABB() { }
 
-    public float getCentreX() {
+    float getCentreX() {
         return centreX;
     }
 
-    public void setCentreX(float centreX) {
+    void setCentreX(float centreX) {
         this.centreX = centreX;
     }
 
-    public float getCentreY() {
+    float getCentreY() {
         return centreY;
     }
 
-    public void setCentreY(float centreY) {
+    void setCentreY(float centreY) {
         this.centreY = centreY;
     }
 
-    public float getWidth() {
+    float getWidth() {
         return width;
     }
 
-    public void setWidth(float width) {
+    void setWidth(float width) {
         this.width = width;
     }
 
-    public float getHeight() {
+    float getHeight() {
         return height;
     }
 
-    public void setHeight(float height) {
+    void setHeight(float height) {
         this.height = height;
     }
 
-    public float getScaleFactor() {
+    float getScaleFactor() {
         return scaleFactor;
     }
 
-    public void setScaleFactor(float scaleFactor) {
+    void setScaleFactor(float scaleFactor) {
         this.scaleFactor = scaleFactor;
     }
 
     /**
      * @return the absolute left coordinate of the bounding box.
      */
-    public float getLeft() {
+    float getLeft() {
         return centreX - scaleFactor * (width / 2);
     }
 
     /**
      * @return the absolute right coordinate of the bounding box.
      */
-    public float getRight() {
+    float getRight() {
         return centreX + scaleFactor * (width / 2);
     }
 
     /**
      * @return the absolute bottom coordinate of the bounding box.
      */
-    public float getBottom() {
+    float getBottom() {
         return centreY - scaleFactor * (height / 2);
     }
 
     /**
      * @return the absolute top coordinate of the bounding box.
      */
-    public float getTop() {
+    float getTop() {
         return centreY + scaleFactor * (height / 2);
     }
 
-    public float getAbsoluteWidth() {
+    float getAbsoluteWidth() {
         return width * scaleFactor;
     }
 
-    public float getAbsoluteHeight() {
+    float getAbsoluteHeight() {
         return height * scaleFactor;
     }
 
@@ -125,7 +125,7 @@ public class AABB {
      *
      * @return An (x,y) pair of absolute values, considering scale.
      */
-    public Vector2f getTopLeft() {
+    Vector2f getTopLeft() {
         return new Vector2f(getLeft(), getTop());
     }
 
@@ -134,7 +134,7 @@ public class AABB {
      *
      * @return An (x,y) pair of absolute values, considering scale.
      */
-    public Vector2f getBottomRight() {
+    Vector2f getBottomRight() {
         return new Vector2f(getRight(), getBottom());
     }
 
@@ -143,7 +143,7 @@ public class AABB {
      *
      * @return An (x,y) pair of absolute values, considering scale.
      */
-    public Vector2f getTopRight() {
+    Vector2f getTopRight() {
         return new Vector2f(getRight(), getTop());
     }
 
@@ -152,19 +152,19 @@ public class AABB {
      *
      * @return An (x,y) pair of absolute values, considering scale.
      */
-    public Vector2f getBottomLeft() {
+    Vector2f getBottomLeft() {
         return new Vector2f(getLeft(), getBottom());
     }
 
-    public void moveX(float value) {
+    void moveX(float value) {
         centreX += value;
     }
 
-    public void moveY(float value) {
+    void moveY(float value) {
         centreY += value;
     }
 
-    public void scaleBy(float sf) {
+    void scaleBy(float sf) {
         scaleFactor += sf;
         if (scaleFactor <= 0.0f) {
             scaleFactor = 0.0f;

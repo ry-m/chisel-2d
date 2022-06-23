@@ -169,9 +169,7 @@ class Renderer implements Subsystem {
         Matrix4f model = new Matrix4f();
 
         // Retrieve the sprite's texture
-        Texture texture = TextureManager.getTexture(sprite.getTextureID());
-        sprite.getBoundingBox().setWidth(texture.getWidth());
-        sprite.getBoundingBox().setHeight(texture.getHeight());
+        Texture texture = sprite.findTexture();
 
         // Set model position.
         // Relative to window size. If the sprite is at (0,0), it is in the centre of the window.

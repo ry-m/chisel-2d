@@ -24,6 +24,7 @@
 
 package org.chisel2d.sprite;
 
+import org.chisel2d.graphics.Texture;
 import org.chisel2d.graphics.TextureManager;
 
 @SuppressWarnings("unused")
@@ -44,6 +45,10 @@ public class Sprite {
     // Opacity (1 == fully opaque, 0 == fully transparent)
     private float opacity = 1.0f;
 
+    // Reference to the sprite's current texture
+    // TODO: support multiple textures
+    private Texture currentTexture = null;
+
     /**
      * Create a sprite with a texture
      * @param imagePath The image resource for the texture
@@ -53,13 +58,29 @@ public class Sprite {
         this.textureID = TextureManager.register(imagePath);
     }
 
-    public String getTextureID() {
-        return textureID;
+    /**
+     * Find the texture stored in the TextureManager's database. The sprite's bounding box is updated
+     * internally to determine its size
+     * @return The texture
+     */
+    public Texture findTexture() {
+        if (currentTexture == null) {
+            this.currentTexture = TextureManager.getTexture(textureID);
+            boundingBox.setWidth(currentTexture.getWidth());
+            boundingBox.setHeight(currentTexture.getHeight());
+        }
+
+        return currentTexture;
     }
+
 
     /////////////////////////
     // Getters and setters //
     /////////////////////////
+
+    public String getTextureID() {
+        return textureID;
+    }
 
     public boolean isVisible() {
         return visible && opacity != 0.0f;
@@ -103,10 +124,6 @@ public class Sprite {
 
     public void setOpacity(float opacity) {
         this.opacity = Math.max(0.0f, Math.min(1.0f, opacity));
-    }
-
-    public AABB getBoundingBox() {
-        return boundingBox;
     }
 
     /////////////////////////////
