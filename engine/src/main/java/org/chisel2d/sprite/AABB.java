@@ -31,7 +31,7 @@ import org.joml.Vector2f;
  * All values are absolute.
  */
 @SuppressWarnings("unused")
-class AABB {
+final class AABB {
 
     // The absolute centre (x, y) of the boundary.
     private float centreX, centreY;
@@ -81,7 +81,7 @@ class AABB {
     }
 
     void setScaleFactor(float scaleFactor) {
-        this.scaleFactor = scaleFactor;
+        this.scaleFactor = Math.max(0.0f, scaleFactor);
     }
 
     /**
