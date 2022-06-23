@@ -44,7 +44,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  * The window subsystem supports the creation and maintaining of a platform window for macOS, Windows or Linux.
  * Uses the GLFW window library.
  */
-class Window implements Subsystem {
+final class Window implements Subsystem {
 
     // Logger
     private static final Logger LOG = LogManager.getLogger();
@@ -134,6 +134,7 @@ class Window implements Subsystem {
             LOG.warn("Cannot retrieve video mode, window performance may be reduced");
         } else {
             glfwWindowHint(GLFW_REFRESH_RATE, vidMode.refreshRate());
+            LOG.info("Detected refresh rate: {}Hz", vidMode.refreshRate());
         }
 
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
@@ -166,6 +167,9 @@ class Window implements Subsystem {
 
         glfwMakeContextCurrent(window);
         GL.createCapabilities();
+
+        // Enable V-Sync
+        glfwSwapInterval(1);
 
         created = true;
     }
