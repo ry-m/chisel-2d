@@ -28,6 +28,7 @@ import org.chisel2d.ChiselApp;
 import org.chisel2d.Timer;
 import org.chisel2d.sprite.Sprite;
 import org.chisel2d.sprite.SpriteManager;
+import org.chisel2d.util.Color;
 
 public class App extends ChiselApp {
 
@@ -39,6 +40,7 @@ public class App extends ChiselApp {
 
     @Override
     protected void setup() {
+        setBackgroundColor(Color.WHITE);
         SpriteManager.add(smile);
     }
 

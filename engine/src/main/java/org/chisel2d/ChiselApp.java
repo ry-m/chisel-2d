@@ -26,6 +26,7 @@ package org.chisel2d;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.chisel2d.util.Color;
 
 public abstract class ChiselApp {
 
@@ -46,6 +47,9 @@ public abstract class ChiselApp {
 
     // Has the application launched yet?
     private static boolean launched = false;
+
+    // Window
+    private Window window = null;
 
     // Protected constructor
     protected ChiselApp() { }
@@ -85,13 +89,15 @@ public abstract class ChiselApp {
             windowTitle, width, height, resizable
         );
 
+        window = new Window(windowTitle, width, height, resizable);
+
         LOG.info("Calling client 'setup()' method...");
         setup();
 
         new Engine(new Subsystem[] {
             // The window MUST be initialised first to ensure the OpenGL context is created, which is a requirement
             // for many of the other subsystems. The order is important.
-            new Window(windowTitle, width, height, resizable),
+            window,
             new Renderer(),
             new Timer(this::onTick)
         }).start();
@@ -163,5 +169,51 @@ public abstract class ChiselApp {
     static int getUPS() {
         // For now, the UPS cannot be changed by the user
         return DEFAULT_UPS;
+    }
+
+    /**
+     * Set the window background color
+     * @param color Color
+     */
+    @SuppressWarnings("unused")
+    protected void setBackgroundColor(Color color) {
+        if (window != null) {
+            window.updateBackgroundColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+        }
+    }
+
+    /**
+     * Set the window background color
+     * @param red Red
+     * @param green Green
+     * @param blue Blue
+     * @param alpha Alpha
+     */
+    @SuppressWarnings("unused")
+    protected void setBackgroundColor(int red, int green, int blue, float alpha) {
+        setBackgroundColor(new Color(red, green, blue, alpha));
+    }
+
+    /**
+     * Change the window's title
+     * @param newTitle The new title
+     */
+    @SuppressWarnings("unused")
+    protected void setWindowTitle(String newTitle) {
+        if (window != null) {
+            window.updateTitle(newTitle);
+        }
+    }
+
+    /**
+     * Change the window's size
+     * @param newWidth New window width
+     * @param newHeight New window height
+     */
+    @SuppressWarnings("unused")
+    protected void setWindowSize(int newWidth, int newHeight) {
+        if (window != null) {
+            window.updateSize(newWidth, newHeight);
+        }
     }
 }

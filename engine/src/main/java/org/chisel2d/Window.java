@@ -26,6 +26,7 @@ package org.chisel2d;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.chisel2d.util.Color;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
@@ -58,12 +59,17 @@ final class Window implements Subsystem {
     // Window title (mutable)
     private String title;
 
-    // Window size
+    // Window width
     private static int width;
+
+    // Window height
     private static int height;
 
     // True if the window can be resized by the user
     private final boolean resizable;
+
+    // Clear color
+    private final Color clearColor = Color.BLACK;
 
     /**
      * Constructor, initialising all parameters
@@ -107,6 +113,42 @@ final class Window implements Subsystem {
             Window.height = height;
             glfwSetWindowSize(window, width, height);
         }
+    }
+
+    /**
+     * Set the background color (glClearColor)
+     * @param red Red
+     * @param green Green
+     * @param blue Blue
+     * @param alpha Alpha
+     */
+    void updateBackgroundColor(int red, int green, int blue, float alpha) {
+        clearColor.setRed(red);
+        clearColor.setGreen(green);
+        clearColor.setBlue(blue);
+        clearColor.setAlpha(alpha);
+
+        if (!created) {
+            LOG.warn("Cannot update background color as window is not yet created");
+        } else {
+            glClearColor(clearColor.fRed(), clearColor.fGreen(), clearColor.fBlue(), clearColor.getAlpha());
+        }
+    }
+
+    /**
+     * Get the window width
+     * @return Window width
+     */
+    static int getWidth() {
+        return width;
+    }
+
+    /**
+     * Get the window height
+     * @return Window height
+     */
+    static int getHeight() {
+        return height;
     }
 
     /**
@@ -171,6 +213,9 @@ final class Window implements Subsystem {
         // Enable V-Sync
         glfwSwapInterval(1);
 
+        // Set color
+        glClearColor(clearColor.fRed(), clearColor.fGreen(), clearColor.fBlue(), clearColor.getAlpha());
+
         created = true;
     }
 
@@ -204,21 +249,5 @@ final class Window implements Subsystem {
     public void shutdown() {
         glfwTerminate();
         Objects.requireNonNull(glfwSetErrorCallback(null)).free();
-    }
-
-    /**
-     * Get the window width
-     * @return Window width
-     */
-    public static int getWidth() {
-        return width;
-    }
-
-    /**
-     * Get the window height
-     * @return Window height
-     */
-    public static int getHeight() {
-        return height;
     }
 }
