@@ -27,7 +27,7 @@ package org.chisel2d.graphics;
 import static org.lwjgl.opengl.GL33.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL33.glBindTexture;
 
-public class Texture {
+public final class Texture {
 
     // Path to texture image
     private final String path;
@@ -60,10 +60,6 @@ public class Texture {
         return path;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public int getWidth() {
         return width;
     }
@@ -72,6 +68,7 @@ public class Texture {
         return height;
     }
 
+    @SuppressWarnings("unused")
     public boolean[][] getMask() {
         return mask;
     }
