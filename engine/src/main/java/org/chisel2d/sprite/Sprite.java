@@ -33,6 +33,9 @@ public class Sprite {
     // The texture ID registered in the TextureManager
     private final String textureID;
 
+    // Name that represent this sprite
+    private final String name;
+
     // Position, scale and bounding box.
     private final AABB boundingBox = new AABB();
 
@@ -50,12 +53,23 @@ public class Sprite {
     private Texture currentTexture = null;
 
     /**
+     * Create a sprite with a name and texture
+     * @param name Name to identify the sprite
+     * @param imagePath The image resource for the texture
+     */
+    public Sprite(String name, String imagePath) {
+        this.name = name;
+        this.textureID = TextureManager.register(imagePath);
+    }
+
+    /**
      * Create a sprite with a texture
      * @param imagePath The image resource for the texture
      */
     public Sprite(String imagePath) {
         // Register the texture to be loaded when the engine is initialised.
         this.textureID = TextureManager.register(imagePath);
+        this.name = textureID;
     }
 
     /**
@@ -72,7 +86,6 @@ public class Sprite {
 
         return currentTexture;
     }
-
 
     /////////////////////////
     // Getters and setters //
@@ -159,5 +172,19 @@ public class Sprite {
 
     public void changeOpacity(float value) {
         this.opacity = Math.max(0.0f, Math.min(opacity + value, 1.0f));
+    }
+
+    /**
+     * An overridable update() method provides access to the game tick. This method is called on each tick and should
+     * be used for any ongoing tasks for the sprite to perform.
+     */
+    public void update() {}
+
+    /**
+     * @return the name of the sprite
+     */
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -120,7 +120,7 @@ public final class TextureManager {
         }
 
         Texture texture = create(absPath, GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
-        LOG.info("New texture registered at '{}'", name);
+        LOG.info("New texture assigned to name '{}'", name);
         registeredTextures.put(name, texture);
     }
 
